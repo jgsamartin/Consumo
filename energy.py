@@ -16,26 +16,31 @@ with open('./energy-data.csv', 'r') as file:
 
 # Ordenamos aleatoriamente el array
 np.random.shuffle(data)
+data = np.array(data, dtype=float)
 
 # Creamos conjunto de entrenamiento y de validación
 limite = round(pTest * len(data))
-x_test = data[:limite]
-x_train = data[limite+1:]
 
-# Scale pixel values from [0,255] to [0,1] 
-x_train, x_test = x_train / 255.0, x_test / 255.0
+x_test = data[:limite, :2]
+y_test = data[:limite, 2]
+x_train = data[limite:, :2]
+y_train = data[limite:, 2]
+
+# Llevamos los valores al intervalo [0, 1]
+y_train, y_test = y_train / np.amax(y_train), y_test / np.amax(y_test)
 
 # Define the network by stacking layers
 network = tf.keras.models.Sequential([
-  tf.keras.layers.Flatten(input_shape=(28, 28)),
-  tf.keras.layers.Dense(128, activation='relu'),
+  #tf.keras.layers.Flatten(input_shape=(28, 28)),
+  tf.keras.layers.Dense(2, input_shape=[2], activation='relu'),
+  tf.keras.layers.Dense(10, activation='relu'),
   tf.keras.layers.Dropout(0.2),
-  tf.keras.layers.Dense(10, activation='softmax')
+  tf.keras.layers.Dense(1)
 ])
 
 # Create the training system 
 network.compile(optimizer='adam',
-                loss='sparse_categorical_crossentropy',
+                loss='mse',
                 metrics=['accuracy'])
 
 # Train the network with train data

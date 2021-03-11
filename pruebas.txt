@@ -1,0 +1,20 @@
+### PRUEBA  1: Primeros resultados
+Con esta configuración:
+# Define the network by stacking layers
+network = tf.keras.models.Sequential([
+  #tf.keras.layers.Flatten(input_shape=(28, 28)),
+  tf.keras.layers.Dense(2, input_shape=[2], activation='relu'),
+  tf.keras.layers.Dense(10, activation='relu'),
+  tf.keras.layers.Dropout(0.2),
+  tf.keras.layers.Dense(1)
+])
+
+# Create the training system 
+network.compile(optimizer='adam',
+                loss='mse',
+                metrics=['accuracy'])
+
+Se consiguen valores de 0.12 de loss y 0 de accuracy
+
+### PRUEBA 2: Número de épocas
+Al subir el número de épocas a 20, el valor de loss sube a 4000, sin aumentar nada la accuracy
