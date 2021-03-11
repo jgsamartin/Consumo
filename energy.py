@@ -19,7 +19,8 @@ np.random.shuffle(data)
 
 # Creamos conjunto de entrenamiento y de validación
 limite = round(pTest * len(data))
-#x_train = 
+x_test = data[:limite]
+x_train = data[limite+1:]
 
 # Scale pixel values from [0,255] to [0,1] 
 x_train, x_test = x_train / 255.0, x_test / 255.0
@@ -42,4 +43,3 @@ network.fit(x_train, y_train, epochs=5)
 
 # Evaluate the network on test data
 loss, accuracy = network.evaluate(x_test, y_test)
-print('Loss =',loss,'\nAccuracy =',accuracy)
